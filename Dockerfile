@@ -12,7 +12,7 @@ RUN echo "deb http://repo.mysql.com/apt/debian/ jessie mysql-${MYSQL_MAJOR}" > /
 	&& apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
-RUN adduser --disabled-password --gecos '' accuragen
+#RUN adduser --disabled-password --gecos '' accuragen
 
 # alias
 RUN echo "alias dj='python manage.py'" >> /root/.bashrc \
