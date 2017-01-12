@@ -100,13 +100,13 @@ DB_HOST = os.environ.get('DATABASE_HOST', 'localhost')
 DB_PORT = os.environ.get('DATABASE_PORT', 3306)
 DB_USER = os.environ.get('MYSQL_USER', 'accuragen')
 DB_PASSWORD = os.environ.get('MYSQL_PASSWORD', 'accura9en_pas5w0rd')
-DATABASE_NAME = 'COMET'
+DB_NAME = os.environ.get('MYSQL_DATABASE','COMET')
 
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': DATABASE_NAME,
+        'NAME': DB_NAME,
         'USER': DB_USER,
         'PASSWORD': DB_PASSWORD,
         'HOST': DB_HOST,
@@ -127,7 +127,7 @@ CHANNEL_LAYERS = {
         "BACKEND": "asgi_redis.RedisChannelLayer",
         "CONFIG": {
             "hosts": [REDIS_URL],
-            "prefix": "COMET"
+            "prefix": DB_NAME
         },
         "ROUTING": "cloudag.routing.channel_routing",
     },
@@ -138,7 +138,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
     'PAGE_SIZE': 30
 }
