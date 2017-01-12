@@ -1,0 +1,8 @@
+*.md
+*.yml
+.DS_Store
+.gitignore
+.dockerignore
+Dockerfile
+python_modules
+config

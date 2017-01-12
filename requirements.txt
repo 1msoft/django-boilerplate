@@ -1,0 +1,23 @@
+# python 2 and 3
+future
+pytest
+
+
+#django 
+Django>=1.9
+channels>=0.10
+asgi_redis>=0.9
+PyMySQL
+
+## web api
+djangorestframework
+djangorestframework-jwt
+django-filter
+markdown
+
+## aws 
+#boto3
+#awscli
+
+
+

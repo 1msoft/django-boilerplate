@@ -1,0 +1,55 @@
+version: '2'
+
+
+volumes:
+    ${APP_NAME}_${WEB_ENV}_mysql_data:
+        driver: local
+
+networks:
+    ${APP_NAME}_${WEB_ENV}_network:
+        driver: bridge
+    
+services:
+    mysql:
+        restart: always
+        image: mysql:5.7
+        env_file:
+            - ./config/envfile/mysql.env
+        volumes:
+            # Using a custom MySQL configuration file
+            - ./config/mysql:/etc/mysql/conf.d
+            # Create a data directory on the host system (outside the container)
+            - ${APP_NAME}_${WEB_ENV}_mysql_data:/var/lib/mysql
+        ports:
+            - "3306:3306"
+        networks:
+            - ${APP_NAME}_${WEB_ENV}_network
+
+    redis:
+        restart: always
+        image: redis
+        ports:
+            - "6379:6379"
+        networks:
+            - ${APP_NAME}_${WEB_ENV}_network
+
+            
+    web:
+        restart: always
+        image: ${ORG_NAME}/${APP_NAME}
+        env_file:
+            - ./config/envfile/mysql.env
+            - ./config/envfile/${WEB_ENV}.env
+            # DJANGO_SETTINGS_MODULE: settings.prod_cn
+        volumes:
+            # Application directory
+            #- .:/var/webapps/cloudag
+            # Application initilize by .sh or .py in folder init.d
+            - ./scripts/init:/var/webapps/init.d
+        ports:
+            - "8000:8000"
+        networks:
+            - ${APP_NAME}_${WEB_ENV}_network
+            
+        command: python manage.py runserver 0.0.0.0:8000
+
