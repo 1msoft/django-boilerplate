@@ -3,7 +3,7 @@ FROM python:2.7
 # install db-client
 ENV MYSQL_MAJOR 5.7
 ENV MYSQL_VERSION 5.7.11-1debian8
-ENV PROJECT_DIR  project
+ARG WORKDIR=server
 
 RUN echo "deb http://repo.mysql.com/apt/debian/ jessie mysql-${MYSQL_MAJOR}" > /etc/apt/sources.list.d/mysql.list \
     && apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys A4A9406876FCBD3C456770C88C718D3B5072E1F5 \
@@ -22,17 +22,17 @@ RUN echo "alias dj='python manage.py'" >> /root/.bashrc \
 
 # create directory and set workdir
 RUN mkdir /var/webapps
-RUN mkdir /var/webapps/${PROJECT_DIR}
-WORKDIR /var/webapps/${PROJECT_DIR}
+RUN mkdir /var/webapps/${WORKDIR}
+WORKDIR /var/webapps/${WORKDIR}
 
 
-ADD ./requirements.txt /var/webapps/${PROJECT_DIR}
+ADD ./requirements.txt /var/webapps/${WORKDIR}
 RUN pip install --upgrade pip \
     && pip install virtualenv \
     && pip install -r ./requirements.txt
 
 
-ADD . /var/webapps/${PROJECT_DIR}
+ADD . /var/webapps/${WORKDIR}
 
 ADD ./scripts/docker-entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

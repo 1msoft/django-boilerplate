@@ -11,7 +11,7 @@ if [ -d "python_modules" ]; then
 else
     # create virtual env for this project.
     # python interpreter and all modules install to .python_modules
-    virtualenv python_modules -p python2.7 --prompt=pyenv
+    virtualenv python_modules -p python2.7 --prompt=pyenv@
     source python_modules/bin/activate
     if [ -n "$VIRTUAL_ENV" ]; then
         # install requirements
